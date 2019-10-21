@@ -1,0 +1,51 @@
+const express = require('express');
+const request = require('request');
+
+const credentials = require('./credentials');
+
+const app = express()
+
+const port = process.env.PORT || 3000
+
+app.get('/weather', function(req, res) {
+  const mapUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${req.query.search}.json?access_token=${credentials.MAPBOX_TOKEN}`
+
+  request.get({url:mapUrl, json:true}, (error, response, body) => {
+    if(error) {
+      res.send("Ocurrió un error");
+      console.log(error);
+    }
+    const location = body.features[0];
+    const long = location.center[0];
+    const lat = location.center[1];
+
+    const weatherUrl = `https://api.darksky.net/forecast/${credentials.DARK_SKY_SECRET_KEY}/${lat},${long}?lang=es&units=si`
+
+    request({url:weatherUrl, json:true}, (error, response, body) => {
+      if(error) {
+        res.send("Ocurrió un error");
+        return console.log(error)
+      }
+      const temp = body.currently.temperature;
+      const sumary = body.currently.summary;
+      const precipProb = body.currently.precipProbability;
+      const message = sumary + ". Actualmente esta a " + temp + "°C" + ". Hay " + precipProb * 100 + "% de posibilidad de lluvia."
+
+      res.status(200).json(
+        {
+          "Ciudad": req.query.search,
+          "°C": temp,
+          "Probabilidad de lluvia": precipProb,
+          "Mensaje": message
+        });
+    });
+  });
+});
+
+app.get('*', function(req, res) {
+  res.send('La ruta especificada no es válida');
+});
+
+app.listen(port, function() {
+  console.log('up and running');
+});

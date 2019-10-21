@@ -1,0 +1,23 @@
+{
+  "name": "lab_5",
+  "version": "1.0.0",
+  "description": "hola",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emifervi/Lab_5.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/emifervi/Lab_5/issues"
+  },
+  "homepage": "https://github.com/emifervi/Lab_5#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "request": "^2.88.0"
+  }
+}
