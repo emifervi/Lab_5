@@ -1,14 +1,17 @@
 const express = require('express');
 const request = require('request');
 
-const credentials = require('./credentials');
-
 const app = express()
 
 const port = process.env.PORT || 3000
 
-const MAPBOX_TOKEN = require('./credentials').MAPBOX_TOKEN || process.env.MAPBOX_APIKEY
-const DARK_SKY_SECRET_KEY = require('./credentials').DARK_SKY_SECRET_KEY || process.env.DARKSKY_APIKEY
+if(process.env.NODE_ENV = 'production'){
+  MAPBOX_TOKEN = process.env.MAPBOX_APIKEY,
+  DARK_SKY_SECRET_KEY = process.env.DARKSKY_APIKEY;
+} else {
+  MAPBOX_TOKEN = require('./credentials').MAPBOX_TOKEN;
+  DARK_SKY_SECRET_KEY = require('./credentials').DARK_SKY_SECRET_KEY;
+}
 
 app.get('/weather', function(req, res) {
   const mapUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${req.query.search}.json?access_token=${MAPBOX_TOKEN}`
