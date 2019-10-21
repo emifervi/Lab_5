@@ -5,6 +5,8 @@ const app = express()
 
 const port = process.env.PORT || 3000
 
+var MAPBOX_TOKEN, DARK_SKY_SECRET_KEY;
+
 if(process.env.NODE_ENV = 'production'){
   MAPBOX_TOKEN = process.env.MAPBOX_APIKEY,
   DARK_SKY_SECRET_KEY = process.env.DARKSKY_APIKEY;
