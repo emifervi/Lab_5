@@ -7,8 +7,11 @@ const app = express()
 
 const port = process.env.PORT || 3000
 
+const MAPBOX_TOKEN = require('./credentials').MAPBOX_TOKEN || process.env.MAPBOX_APIKEY
+const DARK_SKY_SECRET_KEY = require('./credentials').DARK_SKY_SECRET_KEY || process.env.DARKSKY_APIKEY
+
 app.get('/weather', function(req, res) {
-  const mapUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${req.query.search}.json?access_token=${credentials.MAPBOX_TOKEN}`
+  const mapUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${req.query.search}.json?access_token=${MAPBOX_TOKEN}`
 
   request.get({url:mapUrl, json:true}, (error, response, body) => {
     if(error) {
@@ -19,7 +22,7 @@ app.get('/weather', function(req, res) {
     const long = location.center[0];
     const lat = location.center[1];
 
-    const weatherUrl = `https://api.darksky.net/forecast/${credentials.DARK_SKY_SECRET_KEY}/${lat},${long}?lang=es&units=si`
+    const weatherUrl = `https://api.darksky.net/forecast/${DARK_SKY_SECRET_KEY}/${lat},${long}?lang=es&units=si`
 
     request({url:weatherUrl, json:true}, (error, response, body) => {
       if(error) {
